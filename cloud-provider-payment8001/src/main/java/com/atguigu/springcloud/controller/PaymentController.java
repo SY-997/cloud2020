@@ -14,6 +14,7 @@ import com.atguigu.springcloud.entities.Payment;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @auther zzyy
@@ -69,6 +70,21 @@ public class PaymentController
             System.out.println(instance.getInstanceId()+"\t"+instance.getHost()+"\t"+instance.getPort());
         }
         return this.discoveryClient;
+    }
+    @GetMapping(value = "/payment/lb")
+    public String getPaymentLB()
+    {
+        return serverPort;
+    }
+    @GetMapping(value = "/payment/feign/timeout")
+    public String paymentFeignTimeOut(){
+        System.out.println("*****paymentFeignTimeOut from port: "+serverPort);
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return serverPort;
     }
 }
 
